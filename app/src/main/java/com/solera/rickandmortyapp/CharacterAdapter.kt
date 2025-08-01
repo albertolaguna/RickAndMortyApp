@@ -1,5 +1,6 @@
 package com.solera.rickandmortyapp
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class CharacterAdapter(private val characters: List<Character>): RecyclerView.Ad
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.character_item, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -29,6 +31,13 @@ class CharacterAdapter(private val characters: List<Character>): RecyclerView.Ad
         Glide.with(holder.itemView.context)
             .load(character.image)
             .into(holder.imgAvatar)
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, CharacterDetailActivity::class.java)
+            intent.putExtra("CHARACTER_ID", character.id)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int = characters.size
