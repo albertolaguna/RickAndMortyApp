@@ -1,6 +1,8 @@
 package com.solera.rickandmortyapp
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -77,6 +79,17 @@ class MainActivity : AppCompatActivity() {
         originAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner2.adapter = originAdapter
 
+
+        binding.editTextText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterCharacters()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+
         characterAdapter = CharacterAdapter(allCharacters.toMutableList())
         binding.rvCharacters.layoutManager = LinearLayoutManager(this)
         binding.rvCharacters.adapter = characterAdapter
@@ -99,9 +112,12 @@ class MainActivity : AppCompatActivity() {
         val selectedSpecies = binding.spinner.selectedItem as String
         val selectedOrigin = binding.spinner2.selectedItem as String
 
+        val nameQuery = binding.editTextText.text.toString().trim().lowercase()
+
         val filtered = allCharacters.filter { character ->
             (selectedSpecies.isEmpty() || character.species == selectedSpecies) &&
-                    (selectedOrigin.isEmpty() || character.origin.name == selectedOrigin)
+                    (selectedOrigin.isEmpty() || character.origin.name == selectedOrigin) &&
+                    (nameQuery.isEmpty()|| character.name.lowercase().contains(nameQuery))
         }
         characterAdapter.updateList(filtered)
     }
