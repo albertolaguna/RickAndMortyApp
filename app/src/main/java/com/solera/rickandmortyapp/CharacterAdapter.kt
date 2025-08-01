@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class CharacterAdapter(private val characters: List<Character>): RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
+class CharacterAdapter(private val characters: MutableList<Character>) : RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgAvatar: ImageView = view.findViewById(R.id.imgAvatar)
         val name: TextView = view.findViewById(R.id.tvName)
         val spieces: TextView = view.findViewById(R.id.tvSpecies)
@@ -41,4 +41,10 @@ class CharacterAdapter(private val characters: List<Character>): RecyclerView.Ad
     }
 
     override fun getItemCount(): Int = characters.size
+
+    fun updateList(newList: List<Character>) {
+        characters.clear()
+        characters.addAll(newList)
+        notifyDataSetChanged()
+    }
 }
