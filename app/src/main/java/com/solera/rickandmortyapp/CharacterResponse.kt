@@ -23,4 +23,6 @@ data class Character(
 data class Origin(
     val name: String,
     val url: String
+    val status: String,
+    val gender: String
 )
